@@ -25,6 +25,15 @@ main {
   overflow-y: auto;
 }
 
+.open-page {
+  color: rgb(56, 60, 141);
+  cursor: pointer;
+}
+
+.open-page:hover {
+  color: rgb(162, 0, 255);
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

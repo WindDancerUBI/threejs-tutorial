@@ -11,5 +11,5 @@ const baseUrl = import.meta.env.BASE_URL
 
 btns.forEach((i) => {
   const href = i.getAttribute("href")
-  i.onclick = window.open(`${baseUrl}${href}`)
+  i.onclick = () => window.open(`${baseUrl}${href}`)
 })
