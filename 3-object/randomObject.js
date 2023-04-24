@@ -1,13 +1,12 @@
 /*
- * @Title: 操作物体
+ * @Title: 创建随机几何体
  * @Author: huangjitao
- * @Date: 2023-04-24 14:45:12
+ * @Date: 2023-04-24 17:21:13
  * @Description: description of this file
  */
 
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import GUI from "lil-gui";
 
 const sizes = {
   width: window.innerWidth,
@@ -23,9 +22,22 @@ scene.add(axesHelper);
 
 /** --- 创建一个网格模型 --- */
 // 创建一个几何体
-const geometry = new THREE.BoxGeometry(1, 1, 1);
+const geometry = new THREE.BufferGeometry();
+
+const triangleVertices = [];
+for (let index = 0; index < 300; index += 1) {
+  triangleVertices.push(Math.random() - 0.5);
+}
+
+const vertices = new Float32Array(triangleVertices);
+
+geometry.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
+
 // 创建一个材质对象
-const material = new THREE.MeshLambertMaterial({ color: 0x0000ff });
+const material = new THREE.MeshLambertMaterial({
+  color: 0x607d8b,
+  wireframe: true,
+});
 // 创建一个网格模型对象
 const mesh = new THREE.Mesh(geometry, material);
 // 将网格模型对象添加到场景中
@@ -58,39 +70,6 @@ renderer.setSize(sizes.width, sizes.height);
 renderer.setClearColor(0xb9d3ff, 1);
 // 将渲染器添加到画布中去
 document.body.appendChild(renderer.domElement);
-
-/** ---创建图形界面工具--- */
-const panel = new GUI();
-panel
-  .add(mesh, "visible")
-  .name("显示物体")
-  .onChange(() => console.log(`当前物体是否显示：${mesh.visible}`));
-panel
-  .addColor(mesh.material, "color")
-  .name("改变物体颜色")
-  .onChange((v) => {
-    const material = mesh.material
-    material.color.set(v)
-  });
-const positionPanel = panel.addFolder("移动物体位置");
-positionPanel
-  .add(mesh.position, "x")
-  .min(0)
-  .max(5)
-  .step(0.01)
-  .name("移动x轴");
-positionPanel
-  .add(mesh.position, "y")
-  .min(0)
-  .max(5)
-  .step(0.01)
-  .name("移动y轴");
-positionPanel
-  .add(mesh.position, "z")
-  .min(0)
-  .max(5)
-  .step(0.01)
-  .name("移动z轴");
 
 /** ---创建轨道控制器--- */
 const controls = new OrbitControls(camera, renderer.domElement);

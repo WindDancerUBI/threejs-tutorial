@@ -1,7 +1,7 @@
 /*
- * @Title: 操作物体
+ * @Title: 聚光灯
  * @Author: huangjitao
- * @Date: 2023-04-24 14:45:12
+ * @Date: 2023-04-24 18:00:03
  * @Description: description of this file
  */
 
@@ -23,22 +23,56 @@ scene.add(axesHelper);
 
 /** --- 创建一个网格模型 --- */
 // 创建一个几何体
-const geometry = new THREE.BoxGeometry(1, 1, 1);
+const geometry = new THREE.SphereGeometry(1, 20, 20);
 // 创建一个材质对象
-const material = new THREE.MeshLambertMaterial({ color: 0x0000ff });
+const material = new THREE.MeshStandardMaterial();
 // 创建一个网格模型对象
 const mesh = new THREE.Mesh(geometry, material);
+// 设置物体投射阴影
+mesh.castShadow = true;
 // 将网格模型对象添加到场景中
 scene.add(mesh);
 
+// 创建平面
+const planeGeometry = new THREE.PlaneGeometry(50, 50);
+const plane = new THREE.Mesh(planeGeometry, material);
+plane.position.set(0, -1, 0);
+plane.rotation.x = -Math.PI / 2;
+// 接收其它物体的阴影
+plane.receiveShadow = true;
+scene.add(plane);
+
 /** --- 设置光源 --- */
-// 点光源
-const point = new THREE.PointLight(0xffffff);
-point.position.set(4, 2, 3);
-scene.add(point);
-//环境光
-const ambient = new THREE.AmbientLight(0x444444);
+// 环境光
+const ambient = new THREE.AmbientLight(0xffffff, 0.5);
 scene.add(ambient);
+// 聚光灯
+const spotLight = new THREE.SpotLight(0xffffff, 1);
+spotLight.position.set(5, 5, 5);
+spotLight.castShadow = true;
+spotLight.intensity = 2;
+// 设置阴影贴图模糊度
+spotLight.shadow.radius = 20;
+// 设置阴影贴图的分辨率
+spotLight.shadow.mapSize.set(512, 512);
+spotLight.target = mesh;
+spotLight.angle = Math.PI / 6;
+spotLight.distance = 0;
+spotLight.penumbra = 0;
+spotLight.decay = 0;
+scene.add(spotLight);
+
+const panel = new GUI();
+const spotLightPanel = panel.addFolder("聚光灯");
+spotLightPanel.add(mesh.position, "x").min(-5).max(5).step(0.1);
+spotLightPanel
+  .add(spotLight, "angle")
+  .min(0)
+  .max(Math.PI / 2)
+  .step(0.01);
+spotLightPanel.add(spotLight, "distance").min(0).max(10).step(0.01);
+spotLightPanel.add(spotLight, "penumbra").min(0).max(1).step(0.01);
+spotLightPanel.add(spotLight, "decay").min(0).max(5).step(0.01);
 
 /** --- 创建相机 --- */
 const camera = new THREE.PerspectiveCamera(
@@ -47,7 +81,9 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   1000
 );
-camera.position.z = 5;
+camera.position.set(0, 0, 10);
+// 设置相机方向(指向的场景对象)
+camera.lookAt(scene.position);
 scene.add(camera);
 
 /** --- 创建渲染器 --- */
@@ -56,41 +92,11 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(sizes.width, sizes.height);
 // 设置背景颜色
 renderer.setClearColor(0xb9d3ff, 1);
+// 开启阴影渲染
+renderer.shadowMap.enabled = true;
+renderer.physicallyCorrectLights = true;
 // 将渲染器添加到画布中去
 document.body.appendChild(renderer.domElement);
-
-/** ---创建图形界面工具--- */
-const panel = new GUI();
-panel
-  .add(mesh, "visible")
-  .name("显示物体")
-  .onChange(() => console.log(`当前物体是否显示：${mesh.visible}`));
-panel
-  .addColor(mesh.material, "color")
-  .name("改变物体颜色")
-  .onChange((v) => {
-    const material = mesh.material
-    material.color.set(v)
-  });
-const positionPanel = panel.addFolder("移动物体位置");
-positionPanel
-  .add(mesh.position, "x")
-  .min(0)
-  .max(5)
-  .step(0.01)
-  .name("移动x轴");
-positionPanel
-  .add(mesh.position, "y")
-  .min(0)
-  .max(5)
-  .step(0.01)
-  .name("移动y轴");
-positionPanel
-  .add(mesh.position, "z")
-  .min(0)
-  .max(5)
-  .step(0.01)
-  .name("移动z轴");
 
 /** ---创建轨道控制器--- */
 const controls = new OrbitControls(camera, renderer.domElement);
