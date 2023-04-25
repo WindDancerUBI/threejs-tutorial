@@ -18,7 +18,7 @@ main {
   width: calc(100vw - 8em);
   max-width: 600px;
   margin: 2em auto;
-  height: calc(100vh - 8em);
+  height: calc(100vh - 4em);
   background-color: aliceblue;
   padding: 2em;
   border-radius: 2em;
