@@ -10,6 +10,8 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import GUI from "lil-gui";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 
+const baseUrl = import.meta.env.BASE_URL
+
 const sizes = {
   width: window.innerWidth,
   height: window.innerHeight,
@@ -29,18 +31,18 @@ scene.add(axesHelper);
 // 设置cube纹理加载器,设置环境贴图
 const cubeTextureLoader = new THREE.CubeTextureLoader();
 const envMapTexture = cubeTextureLoader.load([
-  "/textures/environmentMaps/1/px.jpg",
-  "/textures/environmentMaps/1/nx.jpg",
-  "/textures/environmentMaps/1/py.jpg",
-  "/textures/environmentMaps/1/ny.jpg",
-  "/textures/environmentMaps/1/pz.jpg",
-  "/textures/environmentMaps/1/nz.jpg",
+  `${baseUrl}textures/environmentMaps/1/px.jpg`,
+  `${baseUrl}textures/environmentMaps/1/nx.jpg`,
+  `${baseUrl}textures/environmentMaps/1/py.jpg`,
+  `${baseUrl}textures/environmentMaps/1/ny.jpg`,
+  `${baseUrl}textures/environmentMaps/1/pz.jpg`,
+  `${baseUrl}textures/environmentMaps/1/nz.jpg`,
 ]);
 
 // 加载hdr环境图
 let hdrTexture;
 const rgbeLoader = new RGBELoader();
-rgbeLoader.loadAsync("/textures/hdr/002.hdr").then((texture) => {
+rgbeLoader.loadAsync(`${baseUrl}textures/hdr/002.hdr`).then((texture) => {
   texture.mapping = THREE.EquirectangularReflectionMapping;
   hdrTexture = texture;
 });

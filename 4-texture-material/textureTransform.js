@@ -8,6 +8,8 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
+const baseUrl = import.meta.env.BASE_URL
+
 const sizes = {
   width: window.innerWidth,
   height: window.innerHeight,

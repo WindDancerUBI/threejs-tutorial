@@ -9,6 +9,8 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import GUI from "lil-gui";
 
+const baseUrl = import.meta.env.BASE_URL
+
 const sizes = {
   width: window.innerWidth,
   height: window.innerHeight,
@@ -41,7 +43,7 @@ loadingManager.onError = (url) => {
 };
 
 const textureLoader = new THREE.TextureLoader(loadingManager);
-const texture = textureLoader.load("/textures/minecraft.png");
+const texture = textureLoader.load(`${baseUrl}textures/minecraft.png`);
 
 // 创建一个材质对象
 const material = new THREE.MeshBasicMaterial({ map: texture });

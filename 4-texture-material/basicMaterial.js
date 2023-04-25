@@ -9,6 +9,8 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import GUI from "lil-gui";
 
+const baseUrl = import.meta.env.BASE_URL
+
 const sizes = {
   width: window.innerWidth,
   height: window.innerHeight,
@@ -41,9 +43,9 @@ loadingManager.onError = (url) => {
 };
 
 const textureLoader = new THREE.TextureLoader(loadingManager);
-const colorTexture = textureLoader.load("/textures/door/color.jpg");
-const AlphaTexture = textureLoader.load("/textures/door/alpha.jpg");
-const AoTexture = textureLoader.load("/textures/door/ambientOcclusion.jpg");
+const colorTexture = textureLoader.load(`${baseUrl}textures/door/color.jpg`);
+const AlphaTexture = textureLoader.load(`${baseUrl}textures/door/alpha.jpg`);
+const AoTexture = textureLoader.load(`${baseUrl}textures/door/ambientOcclusion.jpg`);
 
 const material = new THREE.MeshBasicMaterial({
   color: "#ffff00",

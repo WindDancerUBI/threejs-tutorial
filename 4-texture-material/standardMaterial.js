@@ -9,6 +9,8 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import GUI from "lil-gui";
 
+const baseUrl = import.meta.env.BASE_URL
+
 const sizes = {
   width: window.innerWidth,
   height: window.innerHeight,
@@ -41,13 +43,13 @@ loadingManager.onError = (url) => {
 };
 
 const textureLoader = new THREE.TextureLoader(loadingManager);
-const ColorTexture = textureLoader.load("/textures/door/color.jpg");
-const AlphaTexture = textureLoader.load("/textures/door/alpha.jpg"); // 透明贴图
-const AoTexture = textureLoader.load("/textures/door/ambientOcclusion.jpg"); // 环境遮挡贴图
-const DisplaceTexture = textureLoader.load("/textures/door/height.jpg"); // 置换贴图
-const RoughnessTexture = textureLoader.load("/textures/door/roughness.jpg"); // 粗糙度贴图
-const MetalnessTexture = textureLoader.load("/textures/door/metalness.jpg"); // 金属度贴图
-const NormalTexture = textureLoader.load("/textures/door/normal.jpg"); // 法线贴图
+const ColorTexture = textureLoader.load(`${baseUrl}textures/door/color.jpg`);
+const AlphaTexture = textureLoader.load(`${baseUrl}/textures/door/alpha.jpg`); // 透明贴图
+const AoTexture = textureLoader.load(`${baseUrl}/textures/door/ambientOcclusion.jpg`); // 环境遮挡贴图
+const DisplaceTexture = textureLoader.load(`${baseUrl}/textures/door/height.jpg`); // 置换贴图
+const RoughnessTexture = textureLoader.load(`${baseUrl}/textures/door/roughness.jpg`); // 粗糙度贴图
+const MetalnessTexture = textureLoader.load(`${baseUrl}/textures/door/metalness.jpg`); // 金属度贴图
+const NormalTexture = textureLoader.load(`${baseUrl}/textures/door/normal.jpg`); // 法线贴图
 
 const material = new THREE.MeshStandardMaterial({
   color: "#ffff00",

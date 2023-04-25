@@ -8,6 +8,8 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
+const baseUrl = import.meta.env.BASE_URL
+
 const sizes = {
   width: window.innerWidth,
   height: window.innerHeight,
@@ -40,7 +42,7 @@ loadingManager.onError = (url) => {
 };
 
 const textureLoader = new THREE.TextureLoader(loadingManager);
-const colorTexture = textureLoader.load("/textures/door/color.jpg");
+const colorTexture = textureLoader.load(`${baseUrl}textures/door/color.jpg`);
 
 // 创建一个材质对象
 const material = new THREE.MeshBasicMaterial({ map: colorTexture });
